@@ -8,8 +8,7 @@
                     <h3 class="panel-title"> Login </h3>
                 </div>
                 <div class="panel-body">
-                    <form action="/login" method="post">
-                        {{csrf_field()}}
+                    <form id="login-form" action="/login" method="post">
                         @if(session('error'))
                             <div class="alert alert-danger">
                                 {{session('error')}}
@@ -50,4 +49,36 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').
+            attr('content')
+        }
+    })
+
+    $('#login-form').submit(function(event){
+        event.preventDefault()
+        var postData = {
+            'email' : $('input[name=email]').val(),
+            'password': $('input[name=password]').val(),
+            'remember_me': $('input[name=remember_me]').is(':checked'),
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/login',
+            data: postData,
+            success:: function(response){
+
+            },
+            error: function(response){
+                console.log(response)
+            }
+        })
+    })
+</script>
 @endsection

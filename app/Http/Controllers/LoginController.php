@@ -31,7 +31,7 @@ class LoginController extends Controller
                 return redirect('tasks');
             // return Sentinel::check();
         }else{
-            return redirect()->back()->with(['error' => 'Wrong Credentials.']);
+            return response()->json(['error' => 'Wrong Credentials.'], 500);
         }
         }catch(throttlingException $e){
             $delay = $e->getDelay();
