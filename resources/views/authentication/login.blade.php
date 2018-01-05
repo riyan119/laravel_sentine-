@@ -9,11 +9,12 @@
                 </div>
                 <div class="panel-body">
                     <form id="login-form" action="/login" method="post">
-                        @if(session('error'))
-                            <div class="alert alert-danger">
-                                {{session('error')}}
+                        
+                            <div class="alert alert-danger" style="display:none">
                             </div>
-                        @endif
+                            <div class="alert alert-success" style="display:none">
+                            </div>
+                        
 
                         @if(session('success'))
                             <div class="alert alert-success">
@@ -72,11 +73,12 @@
             type: 'POST',
             url: '/login',
             data: postData,
-            success:: function(response){
-
+            success: function(response){
+                window.location.href = response.redirect
             },
             error: function(response){
-                console.log(response)
+                $('.alert-danger').text(response.responseJSON.error)
+                $('.alert-danger').show()
             }
         })
     })
